@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wen.tlias.mapper.DeptMapper">
+
+
+  <!-- postDept -->
+  <insert id="postDept">
+    insert into dept (name,create_time,update_time)
+    values (#{name},NOW(),NOW())
+  </insert>
+
+  <!-- getDeptById -->
+  <select id="getDeptById" resultType="com.wen.tlias.pojo.Dept">
+   select * 
+   from dept
+    <where>
+      <if test="id!=null"> id=#{id}
+      </if>
+    </where>
+  </select>
+
+
+  <!-- putDept -->
+  <update id="putDept">
+   update dept
+   set name=#{name},update_time=NOW()
+   where id=#{id}
+  </update>
+
+
+
+
+
+</mapper>

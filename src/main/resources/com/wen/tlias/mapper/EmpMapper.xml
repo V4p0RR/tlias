@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wen.tlias.mapper.EmpMapper">
+
+
+
+
+
+
+  <!-- getEmpsByMany -->
+
+  <select id="getEmpsByMany" resultType="com.wen.tlias.pojo.Emp">
+ select * 
+ from emp
+    <where>
+      <if test="emp.name!=null and emp.name!=''">  name=#{emp.name}
+      </if>
+      <if test="emp.gender!=null">
+        and gender=#{emp.gender}
+      </if>
+      <if test="begin!=null">
+        and entrydate &gt;= #{begin}
+      </if>
+      <if test="end!=null">
+        and entrydate &lt;= end
+      </if>
+    </where>
+    limit #{pageStart},#{pageSize};
+  </select>
+
+  <!-- deleteByIds -->
+
+  <delete id="deleteByIds">
+  delete from emp 
+  where id in
+    <foreach collection="ids" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+
+
+  <!-- postEmp -->
+
+  <insert id="postEmp">
+   insert into emp (username,password,name,gender,image,job,entrydate,dept_id,create_time,update_time)
+   values(#{username},#{password},#{name},#{gender},#{image},#{job},#{entrydate},#{deptId},NOW(),NOW()) 
+  </insert>
+
+
+  <!-- getTotal -->
+
+  <select id="getTotal">
+    select count(*)
+    from emp
+    <where>
+      <if test="emp.name!=null and emp.name!=''">  name=#{emp.name}
+      </if>
+      <if test="emp.gender!=null">
+           and gender=#{emp.gender}
+      </if>
+      <if test="begin!=null">
+           and entrydate &gt;= #{begin}
+      </if>
+      <if test="end!=null">
+           and entrydate &lt;= end
+      </if>
+    </where>
+  </select>
+
+  <!-- getEmpById -->
+
+  <select id="getEmpById">
+    select * 
+    from emp 
+    where id=#{id}
+  </select>
+
+
+  <!-- putEmp -->
+
+  <update id="putEmp">
+update emp
+    <set>
+      <if test="username!=null"> username=#{username},
+      </if>
+      <if test="name!=null"> name=#{name},
+      </if>
+      <if test="gender!=null"> gender=#{gender},
+      </if>
+      <if test="image!=null and image!=''"> image=#{image},
+      </if>
+      <if test="deptId!=null"> dept_id=#{deptId},
+      </if>
+      <if test="entrydate!=null"> entrydate=#{entrydate},
+      </if>
+      <if test="job!=null"> job=#{job},
+      </if> update_time=NOW()
+    </set>
+    <where> id=#{id}
+    </where>
+  </update>
+
+  <!-- getEmpByUsernameAndPassword -->
+
+  <select id="getEmpByUsernameAndPassword">
+  select *
+  from emp
+  where username=#{username} and password=#{password}
+  </select>
+
+
+
+</mapper>
